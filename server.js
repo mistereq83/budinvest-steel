@@ -10,9 +10,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'compare', 'index.html'));
 });
 
-// Chooser splash page
+// Chooser variants comparison
 app.get('/chooser', (req, res) => {
-  res.sendFile(path.join(__dirname, 'chooser', 'index.html'));
+  res.sendFile(path.join(__dirname, 'chooser-variants', 'compare.html'));
 });
 
 app.listen(PORT, () => {

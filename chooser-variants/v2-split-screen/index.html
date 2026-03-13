@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bud-Invest — Wybierz dział</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --dark: #1a1a1e;
+    --dark-accent: #2a2a2f;
+    --light: #f5f3ef;
+    --light-accent: #e8e5df;
+    --steel-gold: #c5a55a;
+    --group-teal: #2a7d6e;
+    --split: 50%;
+    --transition: 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── MAIN CONTAINER ─── */
+  .chooser {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* ─── PANELS ─── */
+  .panel {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: flex var(--transition);
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .panel-steel {
+    flex: 1 1 var(--split);
+    background: var(--dark);
+    color: #fff;
+  }
+
+  .panel-group {
+    flex: 1 1 calc(100% - var(--split));
+    background: var(--light);
+    color: var(--dark);
+  }
+
+  /* Subtle texture overlay */
+  .panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  /* ─── DIAGONAL SPLIT LINE ─── */
+  .split-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 3px;
+    height: 100%;
+    z-index: 20;
+    pointer-events: none;
+    transform: translateX(-50%) skewX(-3deg);
+    transition: left var(--transition), transform var(--transition);
+  }
+
+  .split-line::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      var(--steel-gold) 15%,
+      var(--steel-gold) 50%,
+      var(--steel-gold) 85%,
+      transparent 100%
+    );
+    opacity: 0.5;
+  }
+
+  .split-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(255,255,255,0.8) 20%,
+      rgba(255,255,255,0.8) 80%,
+      transparent 100%
+    );
+  }
+
+  /* ─── HOVER STATES ─── */
+  .chooser.hover-steel .panel-steel  { flex-basis: 58%; }
+  .chooser.hover-steel .panel-group  { flex-basis: 42%; }
+  .chooser.hover-steel .split-line   { left: 58%; }
+
+  .chooser.hover-group .panel-steel  { flex-basis: 42%; }
+  .chooser.hover-group .panel-group  { flex-basis: 58%; }
+  .chooser.hover-group .split-line   { left: 42%; }
+
+  /* Panel inner glow on hover */
+  .panel-steel::after,
+  .panel-group::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity var(--transition);
+    pointer-events: none;
+  }
+
+  .panel-steel::after {
+    background: radial-gradient(ellipse at center, rgba(197,165,90,0.08) 0%, transparent 70%);
+  }
+
+  .panel-group::after {
+    background: radial-gradient(ellipse at center, rgba(42,125,110,0.06) 0%, transparent 70%);
+  }
+
+  .chooser.hover-steel .panel-steel::after,
+  .chooser.hover-group .panel-group::after {
+    opacity: 1;
+  }
+
+  /* ─── CONTENT ─── */
+  .panel-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    max-width: 420px;
+  }
+
+  .panel-logo {
+    height: 52px;
+    width: auto;
+    margin-bottom: 2rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: transform 0.4s ease;
+  }
+
+  .chooser.hover-steel .panel-steel .panel-logo,
+  .chooser.hover-group .panel-group .panel-logo {
+    transform: translateY(-4px) scale(1.04);
+  }
+
+  .panel-divider {
+    width: 48px;
+    height: 2px;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .panel-steel .panel-divider { background: var(--steel-gold); }
+  .panel-group .panel-divider { background: var(--group-teal); }
+
+  .panel-subtitle {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .panel-steel .panel-subtitle { color: rgba(255,255,255,0.5); }
+  .panel-group .panel-subtitle { color: rgba(26,26,30,0.4); }
+
+  .panel-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    letter-spacing: 0.06em;
+    line-height: 1.05;
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .panel-desc {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    max-width: 320px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .panel-steel .panel-desc { color: rgba(255,255,255,0.55); }
+  .panel-group .panel-desc { color: rgba(26,26,30,0.55); }
+
+  .panel-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.7rem 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: gap 0.3s ease, letter-spacing 0.3s ease;
+  }
+
+  .panel-steel .panel-cta { color: var(--steel-gold); }
+  .panel-group .panel-cta { color: var(--group-teal); }
+
+  .panel-cta .arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: 1.3rem;
+    line-height: 1;
+  }
+
+  .panel:hover .panel-cta .arrow {
+    transform: translateX(6px);
+  }
+
+  .panel:hover .panel-cta {
+    letter-spacing: 0.22em;
+  }
+
+  /* CTA underline */
+  .panel-cta-text {
+    position: relative;
+  }
+
+  .panel-cta-text::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    transition: width 0.35s ease;
+  }
+
+  .panel-steel .panel-cta-text::after { background: var(--steel-gold); }
+  .panel-group .panel-cta-text::after { background: var(--group-teal); }
+
+  .panel:hover .panel-cta-text::after {
+    width: 100%;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    text-align: center;
+    padding: 1rem 1.5rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.35);
+    background: linear-gradient(transparent, rgba(26,26,30,0.6));
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  .footer span {
+    color: rgba(255,255,255,0.2);
+    margin: 0 0.5rem;
+  }
+
+  /* ─── CORNER BRANDING ─── */
+  .corner-brand {
+    position: fixed;
+    top: 1.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    opacity: 0;
+  }
+
+  .corner-brand .brand-bud {
+    color: rgba(255,255,255,0.5);
+  }
+  .corner-brand .brand-invest {
+    color: var(--steel-gold);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .chooser {
+      flex-direction: column;
+    }
+
+    .panel-steel, .panel-group {
+      flex: 1 1 50% !important;
+      width: 100%;
+    }
+
+    .split-line {
+      top: 50%;
+      left: 0 !important;
+      width: 100%;
+      height: 3px;
+      transform: translateY(-50%) skewY(-1.5deg) !important;
+    }
+
+    .split-line::before {
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--steel-gold) 15%,
+        var(--steel-gold) 85%,
+        transparent 100%
+      );
+    }
+
+    .split-line::after {
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255,255,255,0.8) 20%,
+        rgba(255,255,255,0.8) 80%,
+        transparent 100%
+      );
+    }
+
+    .chooser.hover-steel .panel-steel,
+    .chooser.hover-group .panel-group { flex-basis: 56% !important; }
+    .chooser.hover-steel .panel-group,
+    .chooser.hover-group .panel-steel { flex-basis: 44% !important; }
+
+    .chooser.hover-steel .split-line { top: 56%; }
+    .chooser.hover-group .split-line { top: 44%; }
+
+    .panel-logo { height: 40px; margin-bottom: 1.2rem; }
+    .panel-heading { font-size: clamp(1.8rem, 8vw, 2.6rem); }
+    .panel-desc { font-size: 0.85rem; max-width: 280px; }
+    .panel-subtitle { font-size: 0.95rem; }
+
+    .footer {
+      background: linear-gradient(transparent, rgba(26,26,30,0.85));
+      padding: 1.2rem 1rem;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .panel-content { padding: 1.2rem; }
+    .panel-logo { height: 34px; margin-bottom: 1rem; }
+    .panel-divider { width: 32px; margin-bottom: 1rem; }
+    .panel-heading { margin-bottom: 0.6rem; }
+    .panel-cta { margin-top: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="corner-brand" aria-hidden="true">
+  <span class="brand-bud">Bud</span><span class="brand-invest">Invest</span>
+</div>
+
+<div class="chooser" id="chooser">
+
+  <a href="https://budinvest-steel.com" class="panel panel-steel" id="panelSteel">
+    <div class="panel-content">
+      <img
+        src="https://budinvest-steel.com/wp-content/uploads/2021/04/logo_BI_STEEL_white.svg"
+        alt="Budinvest Steel"
+        class="panel-logo"
+        loading="eager"
+      >
+      <div class="panel-divider"></div>
+      <div class="panel-subtitle">Dział konstrukcji</div>
+      <h2 class="panel-heading">Konstrukcje<br>stalowe</h2>
+      <p class="panel-desc">Hale magazynowe, obiekty handlowe i konstrukcje przemysłowe. Projektowanie, produkcja i montaż.</p>
+      <div class="panel-cta">
+        <span class="panel-cta-text">Przejdź do strony</span>
+        <span class="arrow">→</span>
+      </div>
+    </div>
+  </a>
+
+  <div class="split-line"></div>
+
+  <a href="https://bud-invest.com/group/" class="panel panel-group" id="panelGroup">
+    <div class="panel-content">
+      <img
+        src="https://budinvest-steel.com/wp-content/uploads/2021/03/bud_invest_group-1.svg"
+        alt="Bud-Invest Group"
+        class="panel-logo"
+        loading="eager"
+      >
+      <div class="panel-divider"></div>
+      <div class="panel-subtitle">Dział inwestycji</div>
+      <h2 class="panel-heading">Parki handlowe<br>& osiedla</h2>
+      <p class="panel-desc">Realizacja obiektów komercyjnych i osiedli mieszkaniowych. Od koncepcji po klucz.</p>
+      <div class="panel-cta">
+        <span class="panel-cta-text">Przejdź do strony</span>
+        <span class="arrow">→</span>
+      </div>
+    </div>
+  </a>
+
+</div>
+
+<footer class="footer">
+  ul. Dworcowa 12, 83-110 Tczew <span>|</span> +48 511 641 580
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(function() {
+  const chooser = document.getElementById('chooser');
+  const panelSteel = document.getElementById('panelSteel');
+  const panelGroup = document.getElementById('panelGroup');
+
+  // Hover logic
+  panelSteel.addEventListener('mouseenter', () => {
+    chooser.classList.add('hover-steel');
+    chooser.classList.remove('hover-group');
+  });
+
+  panelGroup.addEventListener('mouseenter', () => {
+    chooser.classList.add('hover-group');
+    chooser.classList.remove('hover-steel');
+  });
+
+  chooser.addEventListener('mouseleave', () => {
+    chooser.classList.remove('hover-steel', 'hover-group');
+  });
+
+  // Touch support for mobile
+  let touchPanel = null;
+  chooser.addEventListener('touchstart', (e) => {
+    const steel = e.target.closest('.panel-steel');
+    const group = e.target.closest('.panel-group');
+    if (steel) {
+      chooser.classList.add('hover-steel');
+      chooser.classList.remove('hover-group');
+      touchPanel = 'steel';
+    } else if (group) {
+      chooser.classList.add('hover-group');
+      chooser.classList.remove('hover-steel');
+      touchPanel = 'group';
+    }
+  }, { passive: true });
+
+  // Entrance animations
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  // Corner brand
+  tl.to('.corner-brand', { opacity: 1, duration: 0.8, delay: 0.2 });
+
+  // Left panel elements
+  tl.to('#panelSteel .panel-logo', { opacity: 1, y: 0, duration: 0.9 }, 0.3)
+    .to('#panelSteel .panel-divider', { opacity: 1, scaleX: 1, duration: 0.6 }, 0.5)
+    .to('#panelSteel .panel-subtitle', { opacity: 1, y: 0, duration: 0.7 }, 0.55)
+    .to('#panelSteel .panel-heading', { opacity: 1, y: 0, duration: 0.8 }, 0.6)
+    .to('#panelSteel .panel-desc', { opacity: 1, y: 0, duration: 0.7 }, 0.75)
+    .to('#panelSteel .panel-cta', { opacity: 1, y: 0, duration: 0.6 }, 0.9);
+
+  // Right panel elements (slight delay)
+  tl.to('#panelGroup .panel-logo', { opacity: 1, y: 0, duration: 0.9 }, 0.45)
+    .to('#panelGroup .panel-divider', { opacity: 1, scaleX: 1, duration: 0.6 }, 0.65)
+    .to('#panelGroup .panel-subtitle', { opacity: 1, y: 0, duration: 0.7 }, 0.7)
+    .to('#panelGroup .panel-heading', { opacity: 1, y: 0, duration: 0.8 }, 0.75)
+    .to('#panelGroup .panel-desc', { opacity: 1, y: 0, duration: 0.7 }, 0.9)
+    .to('#panelGroup .panel-cta', { opacity: 1, y: 0, duration: 0.6 }, 1.05);
+
+  // Split line shimmer
+  tl.to('.split-line', { opacity: 1, duration: 1.2 }, 0.3);
+
+  // Footer
+  tl.to('.footer', { opacity: 1, y: 0, duration: 0.8 }, 1.1);
+})();
+</script>
+</body>
+</html>

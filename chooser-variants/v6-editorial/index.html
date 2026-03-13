@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bud-Invest — Wybierz dział</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --charcoal: #2d2d2d;
+            --cream: #f0ebe3;
+            --terracotta: #b85c38;
+            --warm-gray: #8a8278;
+            --light-cream: #f7f4ef;
+            --deep-charcoal: #1e1e1e;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Source Sans 3', sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+        }
+
+        .page {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        /* ─── Panels ─── */
+        .panel {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 4rem 3.5rem;
+            cursor: pointer;
+            overflow: hidden;
+            transition: flex 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+            text-decoration: none;
+        }
+
+        .panel--steel {
+            flex: 0 0 40%;
+            background: var(--charcoal);
+            color: var(--cream);
+        }
+
+        .panel--group {
+            flex: 0 0 60%;
+            background: var(--cream);
+            color: var(--charcoal);
+        }
+
+        /* ─── Hover expansion ─── */
+        .page:hover .panel--steel,
+        .page:hover .panel--group {
+            flex: 0 0 50%;
+        }
+
+        .panel--steel:hover {
+            flex: 0 0 55% !important;
+        }
+
+        .panel--steel:hover ~ .panel--group {
+            flex: 0 0 45% !important;
+        }
+
+        .panel--group:hover {
+            flex: 0 0 65% !important;
+        }
+
+        .page:has(.panel--group:hover) .panel--steel {
+            flex: 0 0 35% !important;
+        }
+
+        /* ─── Logo ─── */
+        .panel__logo {
+            height: 40px;
+            width: auto;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .panel--group .panel__logo {
+            height: 44px;
+        }
+
+        /* ─── Typography ─── */
+        .panel__number {
+            font-family: 'DM Serif Display', serif;
+            font-size: 8rem;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            opacity: 0.07;
+            position: absolute;
+            top: 2rem;
+            right: 3rem;
+            pointer-events: none;
+        }
+
+        .panel--group .panel__number {
+            color: var(--charcoal);
+        }
+
+        .panel--steel .panel__number {
+            color: var(--cream);
+        }
+
+        .panel__tagline {
+            font-family: 'DM Serif Display', serif;
+            font-style: italic;
+            font-size: 1rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        .panel--steel .panel__tagline {
+            color: var(--terracotta);
+        }
+
+        .panel--group .panel__tagline {
+            color: var(--warm-gray);
+        }
+
+        .panel__heading {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2.2rem, 4vw, 3.8rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            max-width: 420px;
+            opacity: 0;
+            transform: translateY(25px);
+        }
+
+        .panel__desc {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 300;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            max-width: 380px;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .panel--steel .panel__desc {
+            color: rgba(240, 235, 227, 0.6);
+        }
+
+        .panel--group .panel__desc {
+            color: var(--warm-gray);
+        }
+
+        /* ─── CTA ─── */
+        .panel__cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: inherit;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: gap 0.4s ease;
+        }
+
+        .panel:hover .panel__cta {
+            gap: 1.6rem;
+        }
+
+        .panel__cta-line {
+            display: block;
+            width: 48px;
+            height: 1px;
+            transition: width 0.4s ease, background 0.4s ease;
+        }
+
+        .panel--steel .panel__cta-line {
+            background: var(--terracotta);
+        }
+
+        .panel--group .panel__cta-line {
+            background: var(--charcoal);
+        }
+
+        .panel:hover .panel__cta-line {
+            width: 72px;
+        }
+
+        /* ─── Decorative vertical rule ─── */
+        .panel__rule {
+            position: absolute;
+            top: 12%;
+            bottom: 12%;
+            width: 1px;
+            opacity: 0;
+        }
+
+        .panel--steel .panel__rule {
+            right: 0;
+            background: linear-gradient(to bottom, transparent, rgba(240,235,227,0.1) 30%, rgba(240,235,227,0.1) 70%, transparent);
+        }
+
+        .panel--group .panel__rule {
+            left: 0;
+            background: linear-gradient(to bottom, transparent, rgba(45,45,45,0.08) 30%, rgba(45,45,45,0.08) 70%, transparent);
+        }
+
+        /* ─── Hover overlays ─── */
+        .panel::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .panel--steel::after {
+            background: linear-gradient(135deg, rgba(184,92,56,0.06) 0%, transparent 60%);
+        }
+
+        .panel--group::after {
+            background: linear-gradient(135deg, transparent 40%, rgba(45,45,45,0.03) 100%);
+        }
+
+        .panel:hover::after {
+            opacity: 1;
+        }
+
+        /* ─── Footer ─── */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.2rem 2rem;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            color: var(--warm-gray);
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .footer span {
+            margin: 0 0.6rem;
+            opacity: 0.4;
+        }
+
+        /* ─── Corner marks (editorial detail) ─── */
+        .corner-mark {
+            position: fixed;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--warm-gray);
+            opacity: 0;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .corner-mark--tl {
+            top: 1.5rem;
+            left: 2rem;
+        }
+
+        .corner-mark--tr {
+            top: 1.5rem;
+            right: 2rem;
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 900px) {
+            .page {
+                flex-direction: column;
+                overflow-y: auto;
+            }
+
+            html, body {
+                overflow: auto;
+                height: auto;
+            }
+
+            .panel--steel,
+            .panel--group {
+                flex: none !important;
+                min-height: 50vh;
+                padding: 3rem 2rem;
+            }
+
+            .page:hover .panel--steel,
+            .page:hover .panel--group,
+            .panel--steel:hover,
+            .panel--group:hover {
+                flex: none !important;
+            }
+
+            .panel__number {
+                font-size: 5rem;
+                top: 1.5rem;
+                right: 2rem;
+            }
+
+            .panel__heading {
+                font-size: 2rem;
+            }
+
+            .panel__rule {
+                display: none;
+            }
+
+            .corner-mark {
+                display: none;
+            }
+
+            .footer {
+                position: relative;
+                background: var(--light-cream);
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .panel {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .panel__logo {
+                height: 30px;
+                margin-bottom: 2rem;
+            }
+
+            .panel--group .panel__logo {
+                height: 34px;
+            }
+
+            .panel__heading {
+                font-size: 1.7rem;
+            }
+
+            .panel__desc {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="corner-mark corner-mark--tl">Bud-Invest</div>
+    <div class="corner-mark corner-mark--tr">Est. 2008</div>
+
+    <div class="page">
+        <!-- LEFT: Steel (40%) -->
+        <a href="https://budinvest-steel.com" class="panel panel--steel">
+            <div class="panel__number">01</div>
+            <div class="panel__rule"></div>
+            <img src="https://budinvest-steel.com/wp-content/uploads/2021/04/logo_BI_STEEL_white.svg" 
+                 alt="Budinvest Steel" 
+                 class="panel__logo">
+            <div class="panel__tagline">Dział konstrukcji</div>
+            <h2 class="panel__heading">Konstrukcje stalowe</h2>
+            <p class="panel__desc">Projektowanie, produkcja i montaż konstrukcji stalowych dla przemysłu, logistyki i budownictwa komercyjnego.</p>
+            <div class="panel__cta">
+                <span>Przejdź</span>
+                <span class="panel__cta-line"></span>
+            </div>
+        </a>
+
+        <!-- RIGHT: Group (60%) -->
+        <a href="https://bud-invest.com/group/" class="panel panel--group">
+            <div class="panel__number">02</div>
+            <div class="panel__rule"></div>
+            <img src="https://budinvest-steel.com/wp-content/uploads/2021/03/bud_invest_group-1.svg" 
+                 alt="Bud-Invest Group" 
+                 class="panel__logo">
+            <div class="panel__tagline">Dział inwestycji</div>
+            <h2 class="panel__heading">Parki handlowe &amp; osiedla</h2>
+            <p class="panel__desc">Kompleksowa realizacja parków handlowych, osiedli mieszkaniowych i obiektów komercyjnych — od koncepcji po klucz.</p>
+            <div class="panel__cta">
+                <span>Przejdź</span>
+                <span class="panel__cta-line"></span>
+            </div>
+        </a>
+    </div>
+
+    <footer class="footer">
+        ul. Dworcowa 12, 83-110 Tczew <span>|</span> +48 511 641 580
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+            // Corner marks fade in
+            tl.to('.corner-mark', {
+                opacity: 0.4,
+                duration: 1,
+                stagger: 0.2
+            }, 0.3);
+
+            // Steel panel elements
+            tl.to('.panel--steel .panel__logo', {
+                opacity: 1,
+                y: 0,
+                duration: 0.9
+            }, 0.5);
+
+            tl.to('.panel--steel .panel__tagline', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8
+            }, 0.7);
+
+            tl.to('.panel--steel .panel__heading', {
+                opacity: 1,
+                y: 0,
+                duration: 1
+            }, 0.85);
+
+            tl.to('.panel--steel .panel__desc', {
+                opacity: 1,
+                y: 0,
+                duration: 0.9
+            }, 1.05);
+
+            tl.to('.panel--steel .panel__cta', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8
+            }, 1.2);
+
+            // Vertical rules
+            tl.to('.panel__rule', {
+                opacity: 1,
+                duration: 1.2
+            }, 1);
+
+            // Group panel elements (slightly delayed)
+            tl.to('.panel--group .panel__logo', {
+                opacity: 1,
+                y: 0,
+                duration: 0.9
+            }, 0.75);
+
+            tl.to('.panel--group .panel__tagline', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8
+            }, 0.95);
+
+            tl.to('.panel--group .panel__heading', {
+                opacity: 1,
+                y: 0,
+                duration: 1
+            }, 1.1);
+
+            tl.to('.panel--group .panel__desc', {
+                opacity: 1,
+                y: 0,
+                duration: 0.9
+            }, 1.3);
+
+            tl.to('.panel--group .panel__cta', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8
+            }, 1.45);
+
+            // Footer
+            tl.to('.footer', {
+                opacity: 1,
+                duration: 1
+            }, 1.6);
+
+            // Large numbers — subtle counter effect
+            tl.to('.panel__number', {
+                opacity: 0.07,
+                duration: 0
+            }, 0);
+        });
+    </script>
+</body>
+</html>
