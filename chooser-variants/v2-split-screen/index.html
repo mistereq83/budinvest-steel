@@ -63,7 +63,6 @@
     color: var(--dark);
   }
 
-  /* Subtle texture overlay */
   .panel::before {
     content: '';
     position: absolute;
@@ -91,14 +90,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      var(--steel-gold) 15%,
-      var(--steel-gold) 50%,
-      var(--steel-gold) 85%,
-      transparent 100%
-    );
+    background: linear-gradient(180deg, transparent 0%, var(--steel-gold) 15%, var(--steel-gold) 50%, var(--steel-gold) 85%, transparent 100%);
     opacity: 0.5;
   }
 
@@ -110,13 +102,7 @@
     transform: translateX(-50%);
     width: 1px;
     height: 100%;
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      rgba(255,255,255,0.8) 20%,
-      rgba(255,255,255,0.8) 80%,
-      transparent 100%
-    );
+    background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.8) 20%, rgba(255,255,255,0.8) 80%, transparent 100%);
   }
 
   /* ─── HOVER STATES ─── */
@@ -128,7 +114,6 @@
   .chooser.hover-group .panel-group  { flex-basis: 58%; }
   .chooser.hover-group .split-line   { left: 42%; }
 
-  /* Panel inner glow on hover */
   .panel-steel::after,
   .panel-group::after {
     content: '';
@@ -251,18 +236,10 @@
     line-height: 1;
   }
 
-  .panel:hover .panel-cta .arrow {
-    transform: translateX(6px);
-  }
+  .panel:hover .panel-cta .arrow { transform: translateX(6px); }
+  .panel:hover .panel-cta { letter-spacing: 0.22em; }
 
-  .panel:hover .panel-cta {
-    letter-spacing: 0.22em;
-  }
-
-  /* CTA underline */
-  .panel-cta-text {
-    position: relative;
-  }
+  .panel-cta-text { position: relative; }
 
   .panel-cta-text::after {
     content: '';
@@ -276,10 +253,7 @@
 
   .panel-steel .panel-cta-text::after { background: var(--steel-gold); }
   .panel-group .panel-cta-text::after { background: var(--group-teal); }
-
-  .panel:hover .panel-cta-text::after {
-    width: 100%;
-  }
+  .panel:hover .panel-cta-text::after { width: 100%; }
 
   /* ─── FOOTER ─── */
   .footer {
@@ -299,10 +273,7 @@
     transform: translateY(10px);
   }
 
-  .footer span {
-    color: rgba(255,255,255,0.2);
-    margin: 0 0.5rem;
-  }
+  .footer span { color: rgba(255,255,255,0.2); margin: 0 0.5rem; }
 
   /* ─── CORNER BRANDING ─── */
   .corner-brand {
@@ -318,18 +289,66 @@
     opacity: 0;
   }
 
-  .corner-brand .brand-bud {
-    color: rgba(255,255,255,0.5);
+  .corner-brand .brand-bud { color: rgba(255,255,255,0.5); }
+  .corner-brand .brand-invest { color: var(--steel-gold); }
+
+  /* ─── LANGUAGE SELECTOR ─── */
+  .lang-selector {
+    position: fixed;
+    top: 1.6rem;
+    right: 2rem;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    padding: 3px;
+    opacity: 0;
+    transform: translateY(-8px);
   }
-  .corner-brand .brand-invest {
-    color: var(--steel-gold);
+
+  .lang-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.45);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 100px;
+    transition: color 0.3s ease, background 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .lang-btn:hover {
+    color: rgba(255,255,255,0.75);
+  }
+
+  .lang-btn.active {
+    color: var(--dark);
+    background: rgba(255,255,255,0.92);
+    font-weight: 600;
+  }
+
+  .lang-btn .lang-flag {
+    font-size: 1rem;
+    line-height: 1;
   }
 
   /* ─── RESPONSIVE ─── */
   @media (max-width: 768px) {
-    .chooser {
-      flex-direction: column;
-    }
+    .chooser { flex-direction: column; }
 
     .panel-steel, .panel-group {
       flex: 1 1 50% !important;
@@ -345,13 +364,7 @@
     }
 
     .split-line::before {
-      background: linear-gradient(
-        90deg,
-        transparent 0%,
-        var(--steel-gold) 15%,
-        var(--steel-gold) 85%,
-        transparent 100%
-      );
+      background: linear-gradient(90deg, transparent 0%, var(--steel-gold) 15%, var(--steel-gold) 85%, transparent 100%);
     }
 
     .split-line::after {
@@ -360,13 +373,7 @@
       transform: translateY(-50%);
       width: 100%;
       height: 1px;
-      background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255,255,255,0.8) 20%,
-        rgba(255,255,255,0.8) 80%,
-        transparent 100%
-      );
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.8) 20%, rgba(255,255,255,0.8) 80%, transparent 100%);
     }
 
     .chooser.hover-steel .panel-steel,
@@ -386,6 +393,15 @@
       background: linear-gradient(transparent, rgba(26,26,30,0.85));
       padding: 1.2rem 1rem;
     }
+
+    .lang-selector {
+      top: auto;
+      bottom: 3rem;
+      right: 50%;
+      transform: translateX(50%) translateY(8px);
+    }
+
+    .corner-brand { top: 1.2rem; }
   }
 
   @media (max-width: 420px) {
@@ -394,10 +410,26 @@
     .panel-divider { width: 32px; margin-bottom: 1rem; }
     .panel-heading { margin-bottom: 0.6rem; }
     .panel-cta { margin-top: 1.2rem; }
+
+    .lang-btn { padding: 6px 10px; font-size: 0.7rem; }
+    .lang-btn .lang-flag { font-size: 0.9rem; }
   }
 </style>
 </head>
 <body>
+
+<!-- Language selector -->
+<nav class="lang-selector" id="langSelector" aria-label="Language">
+  <button class="lang-btn active" data-lang="pl" aria-label="Polski">
+    <span class="lang-flag">🇵🇱</span> PL
+  </button>
+  <button class="lang-btn" data-lang="de" aria-label="Deutsch">
+    <span class="lang-flag">🇩🇪</span> DE
+  </button>
+  <button class="lang-btn" data-lang="en" aria-label="English">
+    <span class="lang-flag">🇬🇧</span> EN
+  </button>
+</nav>
 
 <div class="corner-brand" aria-hidden="true">
   <span class="brand-bud">Bud</span><span class="brand-invest">Invest</span>
@@ -414,11 +446,11 @@
         loading="eager"
       >
       <div class="panel-divider"></div>
-      <div class="panel-subtitle">Dział konstrukcji</div>
-      <h2 class="panel-heading">Konstrukcje<br>stalowe</h2>
-      <p class="panel-desc">Hale magazynowe, obiekty handlowe i konstrukcje przemysłowe. Projektowanie, produkcja i montaż.</p>
+      <div class="panel-subtitle" data-i18n="steel_subtitle">Dział konstrukcji</div>
+      <h2 class="panel-heading" data-i18n="steel_heading">Konstrukcje<br>stalowe</h2>
+      <p class="panel-desc" data-i18n="steel_desc">Hale magazynowe, obiekty handlowe i konstrukcje przemysłowe. Projektowanie, produkcja i montaż.</p>
       <div class="panel-cta">
-        <span class="panel-cta-text">Przejdź do strony</span>
+        <span class="panel-cta-text" data-i18n="cta">Przejdź do strony</span>
         <span class="arrow">→</span>
       </div>
     </div>
@@ -435,11 +467,11 @@
         loading="eager"
       >
       <div class="panel-divider"></div>
-      <div class="panel-subtitle">Dział inwestycji</div>
-      <h2 class="panel-heading">Parki handlowe<br>& osiedla</h2>
-      <p class="panel-desc">Realizacja obiektów komercyjnych i osiedli mieszkaniowych. Od koncepcji po klucz.</p>
+      <div class="panel-subtitle" data-i18n="group_subtitle">Dział inwestycji</div>
+      <h2 class="panel-heading" data-i18n="group_heading">Parki handlowe<br>& osiedla</h2>
+      <p class="panel-desc" data-i18n="group_desc">Realizacja obiektów komercyjnych i osiedli mieszkaniowych. Od koncepcji po klucz.</p>
       <div class="panel-cta">
-        <span class="panel-cta-text">Przejdź do strony</span>
+        <span class="panel-cta-text" data-i18n="cta">Przejdź do strony</span>
         <span class="arrow">→</span>
       </div>
     </div>
@@ -454,11 +486,87 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 (function() {
+  /* ─── TRANSLATIONS ─── */
+  const i18n = {
+    pl: {
+      title: 'Bud-Invest — Wybierz dział',
+      steel_subtitle: 'Dział konstrukcji',
+      steel_heading: 'Konstrukcje<br>stalowe',
+      steel_desc: 'Hale magazynowe, obiekty handlowe i konstrukcje przemysłowe. Projektowanie, produkcja i montaż.',
+      group_subtitle: 'Dział inwestycji',
+      group_heading: 'Parki handlowe<br>& osiedla',
+      group_desc: 'Realizacja obiektów komercyjnych i osiedli mieszkaniowych. Od koncepcji po klucz.',
+      cta: 'Przejdź do strony'
+    },
+    de: {
+      title: 'Bud-Invest — Bereich wählen',
+      steel_subtitle: 'Stahlkonstruktionen',
+      steel_heading: 'Stahl-<br>konstruktionen',
+      steel_desc: 'Lagerhallen, Gewerbeobjekte und Industriekonstruktionen. Planung, Fertigung und Montage.',
+      group_subtitle: 'Investitionen',
+      group_heading: 'Fachmarktzentren<br>& Wohnanlagen',
+      group_desc: 'Realisierung von Gewerbeobjekten und Wohnsiedlungen. Von der Idee bis zur Schlüsselübergabe.',
+      cta: 'Zur Webseite'
+    },
+    en: {
+      title: 'Bud-Invest — Choose division',
+      steel_subtitle: 'Steel Division',
+      steel_heading: 'Steel<br>Structures',
+      steel_desc: 'Warehouse halls, commercial buildings and industrial structures. Design, manufacturing and assembly.',
+      group_subtitle: 'Investment Division',
+      group_heading: 'Retail Parks<br>& Residential',
+      group_desc: 'Development of commercial and residential projects. From concept to turnkey delivery.',
+      cta: 'Visit website'
+    }
+  };
+
+  let currentLang = localStorage.getItem('bi-lang') || 'pl';
+
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('bi-lang', lang);
+    document.documentElement.lang = lang;
+    document.title = i18n[lang].title;
+
+    // Update all translatable elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (i18n[lang][key]) {
+        el.innerHTML = i18n[lang][key];
+      }
+    });
+
+    // Update active button
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+
+    // Subtle fade animation on text change
+    gsap.fromTo('[data-i18n]',
+      { opacity: 0.3, y: 4 },
+      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', stagger: 0.03 }
+    );
+  }
+
+  // Language selector click handlers
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setLang(btn.dataset.lang);
+    });
+  });
+
+  // Set initial language (from localStorage or default PL)
+  if (currentLang !== 'pl') {
+    setLang(currentLang);
+  }
+
+  /* ─── HOVER LOGIC ─── */
   const chooser = document.getElementById('chooser');
   const panelSteel = document.getElementById('panelSteel');
   const panelGroup = document.getElementById('panelGroup');
 
-  // Hover logic
   panelSteel.addEventListener('mouseenter', () => {
     chooser.classList.add('hover-steel');
     chooser.classList.remove('hover-group');
@@ -473,29 +581,25 @@
     chooser.classList.remove('hover-steel', 'hover-group');
   });
 
-  // Touch support for mobile
-  let touchPanel = null;
+  // Touch support
   chooser.addEventListener('touchstart', (e) => {
     const steel = e.target.closest('.panel-steel');
     const group = e.target.closest('.panel-group');
     if (steel) {
       chooser.classList.add('hover-steel');
       chooser.classList.remove('hover-group');
-      touchPanel = 'steel';
     } else if (group) {
       chooser.classList.add('hover-group');
       chooser.classList.remove('hover-steel');
-      touchPanel = 'group';
     }
   }, { passive: true });
 
-  // Entrance animations
+  /* ─── ENTRANCE ANIMATIONS ─── */
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-  // Corner brand
   tl.to('.corner-brand', { opacity: 1, duration: 0.8, delay: 0.2 });
+  tl.to('.lang-selector', { opacity: 1, y: 0, duration: 0.6 }, 0.3);
 
-  // Left panel elements
   tl.to('#panelSteel .panel-logo', { opacity: 1, y: 0, duration: 0.9 }, 0.3)
     .to('#panelSteel .panel-divider', { opacity: 1, scaleX: 1, duration: 0.6 }, 0.5)
     .to('#panelSteel .panel-subtitle', { opacity: 1, y: 0, duration: 0.7 }, 0.55)
@@ -503,7 +607,6 @@
     .to('#panelSteel .panel-desc', { opacity: 1, y: 0, duration: 0.7 }, 0.75)
     .to('#panelSteel .panel-cta', { opacity: 1, y: 0, duration: 0.6 }, 0.9);
 
-  // Right panel elements (slight delay)
   tl.to('#panelGroup .panel-logo', { opacity: 1, y: 0, duration: 0.9 }, 0.45)
     .to('#panelGroup .panel-divider', { opacity: 1, scaleX: 1, duration: 0.6 }, 0.65)
     .to('#panelGroup .panel-subtitle', { opacity: 1, y: 0, duration: 0.7 }, 0.7)
@@ -511,10 +614,7 @@
     .to('#panelGroup .panel-desc', { opacity: 1, y: 0, duration: 0.7 }, 0.9)
     .to('#panelGroup .panel-cta', { opacity: 1, y: 0, duration: 0.6 }, 1.05);
 
-  // Split line shimmer
   tl.to('.split-line', { opacity: 1, duration: 1.2 }, 0.3);
-
-  // Footer
   tl.to('.footer', { opacity: 1, y: 0, duration: 0.8 }, 1.1);
 })();
 </script>
