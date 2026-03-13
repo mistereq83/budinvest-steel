@@ -5,14 +5,14 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname)));
 
-// Chooser as homepage
+// Design variants comparison as homepage
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'chooser', 'index.html'));
+  res.sendFile(path.join(__dirname, 'compare', 'index.html'));
 });
 
-// Compare page at /compare
-app.get('/compare', (req, res) => {
-  res.sendFile(path.join(__dirname, 'compare', 'index.html'));
+// Chooser splash page
+app.get('/chooser', (req, res) => {
+  res.sendFile(path.join(__dirname, 'chooser', 'index.html'));
 });
 
 app.listen(PORT, () => {
