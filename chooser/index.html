@@ -150,13 +150,15 @@
   }
 
   .panel-logo {
-    height: 52px;
     width: auto;
     margin-bottom: 2rem;
     opacity: 0;
     transform: translateY(30px);
     transition: transform 0.4s ease;
   }
+
+  .panel-steel .panel-logo { height: 52px; }
+  .panel-group .panel-logo { height: 62px; }
 
   .chooser.hover-steel .panel-steel .panel-logo,
   .chooser.hover-group .panel-group .panel-logo {
@@ -275,22 +277,10 @@
 
   .footer span { color: rgba(255,255,255,0.2); margin: 0 0.5rem; }
 
-  /* ─── CORNER BRANDING ─── */
+  /* ─── CORNER BRANDING (hidden) ─── */
   .corner-brand {
-    position: fixed;
-    top: 1.8rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 30;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    opacity: 0;
+    display: none !important;
   }
-
-  .corner-brand .brand-bud { color: rgba(255,255,255,0.5); }
-  .corner-brand .brand-invest { color: var(--steel-gold); }
 
   /* ─── LANGUAGE SELECTOR (desktop: pill) ─── */
   .lang-selector {
@@ -471,7 +461,8 @@
     }
 
     /* ── Compact sizes ── */
-    .panel-logo { height: 32px; margin-bottom: 0.7rem; }
+    .panel-steel .panel-logo { height: 32px; margin-bottom: 0.7rem; }
+    .panel-group .panel-logo { height: 40px; margin-bottom: 0.7rem; }
     .panel-divider { width: 36px; margin-bottom: 0.6rem; }
     .panel-subtitle { font-size: 0.85rem; margin-bottom: 0.4rem; letter-spacing: 0.2em; }
     .panel-heading { font-size: clamp(1.6rem, 7vw, 2.2rem); margin-bottom: 0.3rem; }
@@ -510,7 +501,8 @@
   }
 
   @media (max-width: 360px) {
-    .panel-logo { height: 28px; }
+    .panel-steel .panel-logo { height: 28px; }
+    .panel-group .panel-logo { height: 36px; }
     .panel-heading { font-size: 1.5rem; }
     .panel-cta { padding: 0.6rem 1.4rem; font-size: 0.85rem; }
   }
@@ -749,9 +741,7 @@
   /* ─── ENTRANCE ANIMATIONS ─── */
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-  if (!isMobile) {
-    tl.to('.corner-brand', { opacity: 1, duration: 0.8, delay: 0.2 });
-  }
+  /* corner-brand removed */
 
   tl.to('.lang-selector', { opacity: 1, y: 0, duration: 0.6 }, 0.3);
   tl.to('.lang-dropdown-trigger', { opacity: 1, duration: 0.5 }, 0.3);
