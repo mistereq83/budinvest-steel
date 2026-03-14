@@ -1,615 +1,642 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bud-Invest Group — Wybierz dział</title>
-    <meta name="description" content="Bud-Invest Group — parki handlowe, osiedla mieszkaniowe, konstrukcje stalowe. Wybierz dział.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bud-Invest — Wybierz dział</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        :root {
-            --charcoal: #1a1a1e;
-            --gunmetal: #2a2a30;
-            --steel-dark: #35353d;
-            --steel-mid: #5a5a66;
-            --steel-light: #8a8a96;
-            --silver: #b8b8c4;
-            --off-white: #e8e6e3;
-            --gold: #c8a55a;
-            --gold-dim: #9a7d3a;
-            --gold-glow: rgba(200, 165, 90, 0.15);
-            --blue-steel: #5a7a9a;
-            --blue-glow: rgba(90, 122, 154, 0.15);
-        }
+  :root {
+    --dark: #1a1a1e;
+    --dark-accent: #2a2a2f;
+    --light: #f5f3ef;
+    --light-accent: #e8e5df;
+    --steel-gold: #c5a55a;
+    --group-teal: #2a7d6e;
+    --split: 50%;
+    --transition: 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
 
-        html {
-            font-size: 16px;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
 
-        body {
-            font-family: 'Barlow', sans-serif;
-            background: var(--charcoal);
-            color: var(--off-white);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-            position: relative;
-        }
+  /* ─── MAIN CONTAINER ─── */
+  .chooser {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+  }
 
-        /* ── Noise overlay ── */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            opacity: 0.035;
-            pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-            background-size: 256px 256px;
-        }
+  /* ─── PANELS ─── */
+  .panel {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: flex var(--transition);
+    overflow: hidden;
+    text-decoration: none;
+  }
 
-        /* ── Ambient gradient ── */
-        body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            background: 
-                radial-gradient(ellipse 80% 60% at 30% 20%, rgba(90, 122, 154, 0.06) 0%, transparent 70%),
-                radial-gradient(ellipse 60% 50% at 70% 80%, rgba(200, 165, 90, 0.04) 0%, transparent 70%),
-                radial-gradient(ellipse 120% 80% at 50% 50%, rgba(26, 26, 30, 0) 40%, rgba(0, 0, 0, 0.3) 100%);
-        }
+  .panel-steel {
+    flex: 1 1 var(--split);
+    background: var(--dark);
+    color: #fff;
+  }
 
-        .content-wrapper {
-            position: relative;
-            z-index: 1;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 2rem;
-            min-height: 100vh;
-        }
+  .panel-group {
+    flex: 1 1 calc(100% - var(--split));
+    background: var(--light);
+    color: var(--dark);
+  }
 
-        /* ── Header / Logo ── */
-        .header {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
+  .panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
 
-        .logo-parent {
-            width: clamp(200px, 28vw, 340px);
-            height: auto;
-            margin-bottom: 1.5rem;
-            filter: brightness(0) invert(1);
-            opacity: 0;
-        }
+  /* ─── DIAGONAL SPLIT LINE ─── */
+  .split-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 3px;
+    height: 100%;
+    z-index: 20;
+    pointer-events: none;
+    transform: translateX(-50%) skewX(-3deg);
+    transition: left var(--transition), transform var(--transition);
+  }
 
-        .subtitle {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 300;
-            font-size: clamp(0.75rem, 1.2vw, 0.95rem);
-            letter-spacing: 0.35em;
-            text-transform: uppercase;
-            color: var(--steel-light);
-            opacity: 0;
-        }
+  .split-line::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 0%, var(--steel-gold) 15%, var(--steel-gold) 50%, var(--steel-gold) 85%, transparent 100%);
+    opacity: 0.5;
+  }
 
-        /* ── Divider line ── */
-        .divider {
-            width: 60px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
-            margin: 2.5rem auto;
-            opacity: 0;
-        }
+  .split-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.8) 20%, rgba(255,255,255,0.8) 80%, transparent 100%);
+  }
 
-        /* ── Panels container ── */
-        .panels {
-            display: flex;
-            gap: 2.5rem;
-            width: 100%;
-            max-width: 1100px;
-            justify-content: center;
-            align-items: stretch;
-        }
+  /* ─── HOVER STATES ─── */
+  .chooser.hover-steel .panel-steel  { flex-basis: 58%; }
+  .chooser.hover-steel .panel-group  { flex-basis: 42%; }
+  .chooser.hover-steel .split-line   { left: 58%; }
 
-        /* ── Individual panel ── */
-        .panel {
-            flex: 1;
-            max-width: 480px;
-            min-height: 420px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 3.5rem 2.5rem;
-            text-decoration: none;
-            color: var(--off-white);
-            border: 1px solid rgba(138, 138, 150, 0.1);
-            border-radius: 2px;
-            background: linear-gradient(165deg, rgba(42, 42, 48, 0.6) 0%, rgba(26, 26, 30, 0.8) 100%);
-            backdrop-filter: blur(10px);
-            cursor: pointer;
-            overflow: hidden;
-            opacity: 0;
-            transition: border-color 0.6s ease, background 0.6s ease;
-        }
+  .chooser.hover-group .panel-steel  { flex-basis: 42%; }
+  .chooser.hover-group .panel-group  { flex-basis: 58%; }
+  .chooser.hover-group .split-line   { left: 42%; }
 
-        /* Panel inner glow on hover */
-        .panel::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-            pointer-events: none;
-            border-radius: 2px;
-        }
+  .panel-steel::after,
+  .panel-group::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity var(--transition);
+    pointer-events: none;
+  }
 
-        .panel--group::before {
-            background: radial-gradient(ellipse at center, var(--gold-glow) 0%, transparent 70%);
-        }
+  .panel-steel::after {
+    background: radial-gradient(ellipse at center, rgba(197,165,90,0.08) 0%, transparent 70%);
+  }
 
-        .panel--steel::before {
-            background: radial-gradient(ellipse at center, var(--blue-glow) 0%, transparent 70%);
-        }
+  .panel-group::after {
+    background: radial-gradient(ellipse at center, rgba(42,125,110,0.06) 0%, transparent 70%);
+  }
 
-        .panel:hover::before {
-            opacity: 1;
-        }
+  .chooser.hover-steel .panel-steel::after,
+  .chooser.hover-group .panel-group::after {
+    opacity: 1;
+  }
 
-        /* Border glow lines */
-        .panel::after {
-            content: '';
-            position: absolute;
-            inset: -1px;
-            border-radius: 2px;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-            pointer-events: none;
-        }
+  /* ─── CONTENT ─── */
+  .panel-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    max-width: 420px;
+  }
 
-        .panel--group::after {
-            border: 1px solid rgba(200, 165, 90, 0.25);
-            box-shadow: inset 0 0 40px rgba(200, 165, 90, 0.05), 0 0 30px rgba(200, 165, 90, 0.05);
-        }
+  .panel-logo {
+    height: 52px;
+    width: auto;
+    margin-bottom: 2rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: transform 0.4s ease;
+  }
 
-        .panel--steel::after {
-            border: 1px solid rgba(90, 122, 154, 0.3);
-            box-shadow: inset 0 0 40px rgba(90, 122, 154, 0.05), 0 0 30px rgba(90, 122, 154, 0.05);
-        }
+  .chooser.hover-steel .panel-steel .panel-logo,
+  .chooser.hover-group .panel-group .panel-logo {
+    transform: translateY(-4px) scale(1.04);
+  }
 
-        .panel:hover::after {
-            opacity: 1;
-        }
+  .panel-divider {
+    width: 48px;
+    height: 2px;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: scaleX(0);
+  }
 
-        .panel:hover {
-            transform: translateY(-4px);
-            border-color: transparent;
-        }
+  .panel-steel .panel-divider { background: var(--steel-gold); }
+  .panel-group .panel-divider { background: var(--group-teal); }
 
-        .panel--group:hover {
-            background: linear-gradient(165deg, rgba(50, 46, 38, 0.7) 0%, rgba(26, 26, 30, 0.9) 100%);
-        }
+  .panel-subtitle {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(20px);
+  }
 
-        .panel--steel:hover {
-            background: linear-gradient(165deg, rgba(38, 44, 52, 0.7) 0%, rgba(26, 26, 30, 0.9) 100%);
-        }
+  .panel-steel .panel-subtitle { color: rgba(255,255,255,0.5); }
+  .panel-group .panel-subtitle { color: rgba(26,26,30,0.4); }
 
-        /* ── Icon area ── */
-        .panel__icon {
-            width: 56px;
-            height: 56px;
-            margin-bottom: 2rem;
-            position: relative;
-            opacity: 0.7;
-            transition: opacity 0.4s ease;
-        }
+  .panel-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    letter-spacing: 0.06em;
+    line-height: 1.05;
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(30px);
+  }
 
-        .panel:hover .panel__icon {
-            opacity: 1;
-        }
+  .panel-desc {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    max-width: 320px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
 
-        .panel__icon svg {
-            width: 100%;
-            height: 100%;
-        }
+  .panel-steel .panel-desc { color: rgba(255,255,255,0.55); }
+  .panel-group .panel-desc { color: rgba(26,26,30,0.55); }
 
-        /* ── Division logo ── */
-        .panel__logo {
-            height: 32px;
-            width: auto;
-            margin-bottom: 1.2rem;
-            filter: brightness(0) invert(0.85);
-            transition: filter 0.4s ease;
-            display: none;
-        }
+  .panel-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.7rem 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: gap 0.3s ease, letter-spacing 0.3s ease;
+  }
 
-        .panel:hover .panel__logo {
-            filter: brightness(0) invert(1);
-        }
+  .panel-steel .panel-cta { color: var(--steel-gold); }
+  .panel-group .panel-cta { color: var(--group-teal); }
 
-        /* ── Division name ── */
-        .panel__name {
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 600;
-            font-size: clamp(2.2rem, 4vw, 3.2rem);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 0.8rem;
-            transition: color 0.4s ease;
-            position: relative;
-        }
+  .panel-cta .arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: 1.3rem;
+    line-height: 1;
+  }
 
-        .panel--group .panel__name {
-            color: var(--off-white);
-        }
+  .panel:hover .panel-cta .arrow { transform: translateX(6px); }
+  .panel:hover .panel-cta { letter-spacing: 0.22em; }
 
-        .panel--steel .panel__name {
-            color: var(--off-white);
-        }
+  .panel-cta-text { position: relative; }
 
-        .panel--group:hover .panel__name {
-            color: var(--gold);
-        }
+  .panel-cta-text::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    transition: width 0.35s ease;
+  }
 
-        .panel--steel:hover .panel__name {
-            color: var(--blue-steel);
-        }
+  .panel-steel .panel-cta-text::after { background: var(--steel-gold); }
+  .panel-group .panel-cta-text::after { background: var(--group-teal); }
+  .panel:hover .panel-cta-text::after { width: 100%; }
 
-        /* ── Accent line under name ── */
-        .panel__accent {
-            width: 40px;
-            height: 1px;
-            margin-bottom: 1.5rem;
-            transition: width 0.5s ease, background 0.4s ease;
-        }
+  /* ─── FOOTER ─── */
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    text-align: center;
+    padding: 1rem 1.5rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.35);
+    background: linear-gradient(transparent, rgba(26,26,30,0.6));
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(10px);
+  }
 
-        .panel--group .panel__accent {
-            background: var(--gold-dim);
-        }
+  .footer span { color: rgba(255,255,255,0.2); margin: 0 0.5rem; }
 
-        .panel--steel .panel__accent {
-            background: var(--blue-steel);
-        }
+  /* ─── CORNER BRANDING ─── */
+  .corner-brand {
+    position: fixed;
+    top: 1.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    opacity: 0;
+  }
 
-        .panel:hover .panel__accent {
-            width: 80px;
-        }
+  .corner-brand .brand-bud { color: rgba(255,255,255,0.5); }
+  .corner-brand .brand-invest { color: var(--steel-gold); }
 
-        /* ── Tagline ── */
-        .panel__tagline {
-            font-family: 'Barlow', sans-serif;
-            font-weight: 300;
-            font-size: clamp(0.85rem, 1.1vw, 1rem);
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--steel-light);
-            margin-bottom: 2.5rem;
-            transition: color 0.4s ease;
-        }
+  /* ─── LANGUAGE SELECTOR ─── */
+  .lang-selector {
+    position: fixed;
+    top: 1.6rem;
+    right: 2rem;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    padding: 3px;
+    opacity: 0;
+    transform: translateY(-8px);
+  }
 
-        .panel:hover .panel__tagline {
-            color: var(--silver);
-        }
+  .lang-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.45);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 100px;
+    transition: color 0.3s ease, background 0.3s ease;
+    white-space: nowrap;
+  }
 
-        /* ── CTA arrow ── */
-        .panel__cta {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 400;
-            font-size: 0.8rem;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            color: var(--steel-mid);
-            transition: color 0.4s ease, gap 0.4s ease;
-        }
+  .lang-btn:hover {
+    color: rgba(255,255,255,0.75);
+  }
 
-        .panel:hover .panel__cta {
-            gap: 1rem;
-        }
+  .lang-btn.active {
+    color: var(--dark);
+    background: rgba(255,255,255,0.92);
+    font-weight: 600;
+  }
 
-        .panel--group:hover .panel__cta {
-            color: var(--gold);
-        }
+  .lang-btn .lang-flag {
+    font-size: 1rem;
+    line-height: 1;
+  }
 
-        .panel--steel:hover .panel__cta {
-            color: var(--blue-steel);
-        }
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    html, body { overflow: auto; height: auto; }
 
-        .panel__cta svg {
-            width: 20px;
-            height: 20px;
-            transition: transform 0.4s ease;
-        }
+    .chooser {
+      flex-direction: column;
+      height: auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
 
-        .panel:hover .panel__cta svg {
-            transform: translateX(4px);
-        }
+    .panel-steel, .panel-group {
+      flex: none !important;
+      width: 100%;
+      min-height: 50vh;
+      min-height: 50dvh;
+      padding: 2.5rem 0 1.5rem;
+    }
 
-        /* ── Vertical separator between panels ── */
-        .panels__separator {
-            width: 1px;
-            align-self: stretch;
-            background: linear-gradient(180deg, transparent 10%, rgba(138, 138, 150, 0.15) 50%, transparent 90%);
-            opacity: 0;
-            flex-shrink: 0;
-        }
+    .split-line {
+      display: none;
+    }
 
-        /* ── Footer ── */
-        .footer {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 2rem 2rem 1.8rem;
-            font-family: 'Barlow', sans-serif;
-            font-weight: 300;
-            font-size: 0.75rem;
-            letter-spacing: 0.08em;
-            color: var(--steel-mid);
-            opacity: 0;
-        }
+    /* Subtle horizontal divider instead of diagonal */
+    .panel-group::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--steel-gold) 30%, var(--steel-gold) 70%, transparent);
+      opacity: 0.4;
+      z-index: 5;
+    }
 
-        .footer__line {
-            width: 40px;
-            height: 1px;
-            background: rgba(138, 138, 150, 0.15);
-            margin: 0 auto 1.2rem;
-        }
+    /* Disable hover expand on mobile — tap goes straight to link */
+    .chooser.hover-steel .panel-steel,
+    .chooser.hover-group .panel-group,
+    .chooser.hover-steel .panel-group,
+    .chooser.hover-group .panel-steel {
+      flex: none !important;
+    }
 
-        .footer span {
-            display: inline-block;
-            margin: 0 0.8rem;
-        }
+    .panel-logo { height: 40px; margin-bottom: 1.2rem; }
+    .panel-heading { font-size: clamp(1.8rem, 8vw, 2.6rem); }
+    .panel-desc { font-size: 0.85rem; max-width: 280px; }
+    .panel-subtitle { font-size: 0.95rem; }
 
-        .footer a {
-            color: var(--steel-mid);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
+    .footer {
+      position: relative;
+      background: var(--dark);
+      padding: 1.4rem 1rem;
+      opacity: 1;
+      transform: none;
+    }
 
-        .footer a:hover {
-            color: var(--silver);
-        }
+    /* Language selector stays top-right on mobile, just smaller */
+    .lang-selector {
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-color: rgba(255,255,255,0.12);
+    }
 
-        /* ── Responsive ── */
-        @media (max-width: 768px) {
-            .content-wrapper {
-                padding: 2.5rem 1.5rem;
-                justify-content: flex-start;
-                padding-top: 15vh;
-            }
+    .corner-brand { top: 1.2rem; }
+  }
 
-            .panels {
-                flex-direction: column;
-                align-items: center;
-                gap: 1.5rem;
-            }
+  @media (max-width: 420px) {
+    .panel-content { padding: 1.2rem; }
+    .panel-logo { height: 34px; margin-bottom: 1rem; }
+    .panel-divider { width: 32px; margin-bottom: 1rem; }
+    .panel-heading { margin-bottom: 0.6rem; }
+    .panel-cta { margin-top: 1.2rem; }
 
-            .panels__separator {
-                width: 60px;
-                height: 1px;
-                background: linear-gradient(90deg, transparent 10%, rgba(138, 138, 150, 0.15) 50%, transparent 90%);
-            }
+    .lang-btn { padding: 5px 8px; font-size: 0.7rem; }
+    .lang-btn .lang-flag { font-size: 0.85rem; }
 
-            .panel {
-                max-width: 100%;
-                min-height: 300px;
-                padding: 2.5rem 2rem;
-            }
+    .lang-selector { padding: 2px; }
+  }
 
-            .panel__name {
-                font-size: 2.2rem;
-            }
-
-            .divider {
-                margin: 1.8rem auto;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .content-wrapper {
-                padding-top: 10vh;
-            }
-
-            .panel {
-                min-height: 260px;
-                padding: 2rem 1.5rem;
-            }
-
-            .panel__icon {
-                width: 44px;
-                height: 44px;
-                margin-bottom: 1.5rem;
-            }
-        }
-
-        /* ── Smooth transitions ── */
-        .panel {
-            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), 
-                        border-color 0.6s ease, 
-                        background 0.6s ease;
-        }
-    </style>
+  @media (max-width: 360px) {
+    /* Ultra-narrow: hide lang text, show flags only */
+    .lang-btn { padding: 5px 7px; gap: 0; }
+    .lang-btn .lang-flag { font-size: 0.95rem; }
+  }
+</style>
 </head>
 <body>
 
-    <div class="content-wrapper">
-        <!-- Header -->
-        <header class="header">
-            <img src="https://bud-invest.com/wp-content/uploads/2024/09/BUD_INVEST_Group_@4x-invert.png" 
-                 alt="Bud-Invest Group" 
-                 class="logo-parent">
-            <p class="subtitle">Wybierz dział</p>
-        </header>
+<!-- Language selector -->
+<nav class="lang-selector" id="langSelector" aria-label="Language">
+  <button class="lang-btn active" data-lang="pl" aria-label="Polski">
+    <span class="lang-flag">🇵🇱</span> PL
+  </button>
+  <button class="lang-btn" data-lang="de" aria-label="Deutsch">
+    <span class="lang-flag">🇩🇪</span> DE
+  </button>
+  <button class="lang-btn" data-lang="en" aria-label="English">
+    <span class="lang-flag">🇬🇧</span> EN
+  </button>
+</nav>
 
-        <div class="divider"></div>
+<div class="corner-brand" aria-hidden="true">
+  <span class="brand-bud">Bud</span><span class="brand-invest">Invest</span>
+</div>
 
-        <!-- Panels -->
-        <div class="panels">
-            <!-- GROUP panel -->
-            <a href="https://bud-invest.com/group/" class="panel panel--group">
-                <div class="panel__icon">
-                    <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="4" y="22" width="20" height="30" rx="1" stroke="currentColor" stroke-width="1.2" opacity="0.6"/>
-                        <rect x="32" y="14" width="20" height="38" rx="1" stroke="currentColor" stroke-width="1.2" opacity="0.6"/>
-                        <rect x="18" y="4" width="20" height="48" rx="1" stroke="currentColor" stroke-width="1.2" opacity="0.8"/>
-                        <line x1="24" y1="12" x2="30" y2="12" stroke="currentColor" stroke-width="1" opacity="0.4"/>
-                        <line x1="24" y1="18" x2="30" y2="18" stroke="currentColor" stroke-width="1" opacity="0.4"/>
-                        <line x1="24" y1="24" x2="30" y2="24" stroke="currentColor" stroke-width="1" opacity="0.4"/>
-                        <line x1="24" y1="30" x2="30" y2="30" stroke="currentColor" stroke-width="1" opacity="0.4"/>
-                        <line x1="24" y1="36" x2="30" y2="36" stroke="currentColor" stroke-width="1" opacity="0.4"/>
-                    </svg>
-                </div>
-                <h2 class="panel__name">Group</h2>
-                <div class="panel__accent"></div>
-                <p class="panel__tagline">Parki handlowe & osiedla</p>
-                <div class="panel__cta">
-                    <span>Przejdź</span>
-                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <line x1="3" y1="10" x2="17" y2="10"/>
-                        <polyline points="12,5 17,10 12,15"/>
-                    </svg>
-                </div>
-            </a>
+<div class="chooser" id="chooser">
 
-            <!-- Separator -->
-            <div class="panels__separator"></div>
-
-            <!-- STEEL panel -->
-            <a href="https://budinvest-steel.com" class="panel panel--steel">
-                <div class="panel__icon">
-                    <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 48 L28 4 L52 48 Z" stroke="currentColor" stroke-width="1.2" fill="none" opacity="0.7"/>
-                        <line x1="16" y1="36" x2="40" y2="36" stroke="currentColor" stroke-width="1" opacity="0.4"/>
-                        <line x1="20" y1="28" x2="36" y2="28" stroke="currentColor" stroke-width="1" opacity="0.3"/>
-                        <line x1="28" y1="4" x2="28" y2="48" stroke="currentColor" stroke-width="0.8" opacity="0.2"/>
-                        <circle cx="28" cy="20" r="2" stroke="currentColor" stroke-width="1" opacity="0.5" fill="none"/>
-                    </svg>
-                </div>
-                <h2 class="panel__name">Steel</h2>
-                <div class="panel__accent"></div>
-                <p class="panel__tagline">Konstrukcje stalowe</p>
-                <div class="panel__cta">
-                    <span>Przejdź</span>
-                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <line x1="3" y1="10" x2="17" y2="10"/>
-                        <polyline points="12,5 17,10 12,15"/>
-                    </svg>
-                </div>
-            </a>
-        </div>
+  <a href="https://budinvest-steel.com" class="panel panel-steel" id="panelSteel">
+    <div class="panel-content">
+      <img
+        src="https://budinvest-steel.com/wp-content/uploads/2021/04/logo_BI_STEEL_white.svg"
+        alt="Budinvest Steel"
+        class="panel-logo"
+        loading="eager"
+      >
+      <div class="panel-divider"></div>
+      <div class="panel-subtitle" data-i18n="steel_subtitle">Dział konstrukcji</div>
+      <h2 class="panel-heading" data-i18n="steel_heading">Konstrukcje<br>stalowe</h2>
+      <p class="panel-desc" data-i18n="steel_desc">Hale magazynowe, obiekty handlowe i konstrukcje przemysłowe. Projektowanie, produkcja i montaż.</p>
+      <div class="panel-cta">
+        <span class="panel-cta-text" data-i18n="cta">Przejdź do strony</span>
+        <span class="arrow">→</span>
+      </div>
     </div>
+  </a>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer__line"></div>
-        <span>ul. Dworcowa 12, 83-100 Tczew</span>
-        <span>·</span>
-        <a href="tel:+48511641580">+48 511 641 580</a>
-    </footer>
+  <div class="split-line"></div>
 
-    <!-- GSAP -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  <a href="https://bud-invest.com/group/" class="panel panel-group" id="panelGroup">
+    <div class="panel-content">
+      <img
+        src="https://budinvest-steel.com/wp-content/uploads/2021/03/bud_invest_group-1.svg"
+        alt="Bud-Invest Group"
+        class="panel-logo"
+        loading="eager"
+      >
+      <div class="panel-divider"></div>
+      <div class="panel-subtitle" data-i18n="group_subtitle">Dział inwestycji</div>
+      <h2 class="panel-heading" data-i18n="group_heading">Parki handlowe<br>& osiedla</h2>
+      <p class="panel-desc" data-i18n="group_desc">Realizacja obiektów komercyjnych i osiedli mieszkaniowych. Od koncepcji po klucz.</p>
+      <div class="panel-cta">
+        <span class="panel-cta-text" data-i18n="cta">Przejdź do strony</span>
+        <span class="arrow">→</span>
+      </div>
+    </div>
+  </a>
 
-            // Logo fade in + drift down
-            tl.fromTo('.logo-parent', 
-                { opacity: 0, y: -20 }, 
-                { opacity: 1, y: 0, duration: 1.2 }
-            );
+</div>
 
-            // Subtitle
-            tl.fromTo('.subtitle', 
-                { opacity: 0, y: 10 }, 
-                { opacity: 1, y: 0, duration: 0.8 }, 
-                '-=0.5'
-            );
+<footer class="footer">
+  ul. Dworcowa 12, 83-110 Tczew <span>|</span> +48 511 641 580
+</footer>
 
-            // Divider
-            tl.fromTo('.divider', 
-                { opacity: 0, scaleX: 0 }, 
-                { opacity: 1, scaleX: 1, duration: 0.8 }, 
-                '-=0.3'
-            );
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(function() {
+  /* ─── TRANSLATIONS ─── */
+  const i18n = {
+    pl: {
+      title: 'Bud-Invest — Wybierz dział',
+      steel_subtitle: 'Dział konstrukcji',
+      steel_heading: 'Konstrukcje<br>stalowe',
+      steel_desc: 'Hale magazynowe, obiekty handlowe i konstrukcje przemysłowe. Projektowanie, produkcja i montaż.',
+      group_subtitle: 'Dział inwestycji',
+      group_heading: 'Parki handlowe<br>& osiedla',
+      group_desc: 'Realizacja obiektów komercyjnych i osiedli mieszkaniowych. Od koncepcji po klucz.',
+      cta: 'Przejdź do strony'
+    },
+    de: {
+      title: 'Bud-Invest — Bereich wählen',
+      steel_subtitle: 'Stahlkonstruktionen',
+      steel_heading: 'Stahl-<br>konstruktionen',
+      steel_desc: 'Lagerhallen, Gewerbeobjekte und Industriekonstruktionen. Planung, Fertigung und Montage.',
+      group_subtitle: 'Investitionen',
+      group_heading: 'Fachmarktzentren<br>& Wohnanlagen',
+      group_desc: 'Realisierung von Gewerbeobjekten und Wohnsiedlungen. Von der Idee bis zur Schlüsselübergabe.',
+      cta: 'Zur Webseite'
+    },
+    en: {
+      title: 'Bud-Invest — Choose division',
+      steel_subtitle: 'Steel Division',
+      steel_heading: 'Steel<br>Structures',
+      steel_desc: 'Warehouse halls, commercial buildings and industrial structures. Design, manufacturing and assembly.',
+      group_subtitle: 'Investment Division',
+      group_heading: 'Retail Parks<br>& Residential',
+      group_desc: 'Development of commercial and residential projects. From concept to turnkey delivery.',
+      cta: 'Visit website'
+    }
+  };
 
-            // Panels slide in from sides
-            tl.fromTo('.panel--group', 
-                { opacity: 0, x: -60 }, 
-                { opacity: 1, x: 0, duration: 1 }, 
-                '-=0.4'
-            );
+  let currentLang = localStorage.getItem('bi-lang') || 'pl';
 
-            tl.fromTo('.panel--steel', 
-                { opacity: 0, x: 60 }, 
-                { opacity: 1, x: 0, duration: 1 }, 
-                '-=0.8'
-            );
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('bi-lang', lang);
+    document.documentElement.lang = lang;
+    document.title = i18n[lang].title;
 
-            // Separator
-            tl.fromTo('.panels__separator', 
-                { opacity: 0, scaleY: 0 }, 
-                { opacity: 1, scaleY: 1, duration: 0.6 }, 
-                '-=0.6'
-            );
+    // Update all translatable elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (i18n[lang][key]) {
+        el.innerHTML = i18n[lang][key];
+      }
+    });
 
-            // Footer
-            tl.fromTo('.footer', 
-                { opacity: 0, y: 15 }, 
-                { opacity: 1, y: 0, duration: 0.8 }, 
-                '-=0.3'
-            );
+    // Update active button
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
 
-            // Magnetic hover effect on panels
-            document.querySelectorAll('.panel').forEach(panel => {
-                panel.addEventListener('mousemove', (e) => {
-                    const rect = panel.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = (y - centerY) / centerY * -2;
-                    const rotateY = (x - centerX) / centerX * 2;
+    // Subtle fade animation on text change
+    gsap.fromTo('[data-i18n]',
+      { opacity: 0.3, y: 4 },
+      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', stagger: 0.03 }
+    );
+  }
 
-                    gsap.to(panel, {
-                        rotateX: rotateX,
-                        rotateY: rotateY,
-                        transformPerspective: 1000,
-                        duration: 0.4,
-                        ease: 'power2.out'
-                    });
-                });
+  // Language selector click handlers
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setLang(btn.dataset.lang);
+    });
+  });
 
-                panel.addEventListener('mouseleave', () => {
-                    gsap.to(panel, {
-                        rotateX: 0,
-                        rotateY: 0,
-                        y: 0,
-                        duration: 0.6,
-                        ease: 'power2.out'
-                    });
-                });
-            });
-        });
-    </script>
+  // Set initial language (from localStorage or default PL)
+  if (currentLang !== 'pl') {
+    setLang(currentLang);
+  }
+
+  /* ─── HOVER LOGIC ─── */
+  const chooser = document.getElementById('chooser');
+  const panelSteel = document.getElementById('panelSteel');
+  const panelGroup = document.getElementById('panelGroup');
+
+  panelSteel.addEventListener('mouseenter', () => {
+    chooser.classList.add('hover-steel');
+    chooser.classList.remove('hover-group');
+  });
+
+  panelGroup.addEventListener('mouseenter', () => {
+    chooser.classList.add('hover-group');
+    chooser.classList.remove('hover-steel');
+  });
+
+  chooser.addEventListener('mouseleave', () => {
+    chooser.classList.remove('hover-steel', 'hover-group');
+  });
+
+  // Touch support
+  chooser.addEventListener('touchstart', (e) => {
+    const steel = e.target.closest('.panel-steel');
+    const group = e.target.closest('.panel-group');
+    if (steel) {
+      chooser.classList.add('hover-steel');
+      chooser.classList.remove('hover-group');
+    } else if (group) {
+      chooser.classList.add('hover-group');
+      chooser.classList.remove('hover-steel');
+    }
+  }, { passive: true });
+
+  /* ─── ENTRANCE ANIMATIONS ─── */
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  tl.to('.corner-brand', { opacity: 1, duration: 0.8, delay: 0.2 });
+  tl.to('.lang-selector', { opacity: 1, y: 0, duration: 0.6 }, 0.3);
+
+  tl.to('#panelSteel .panel-logo', { opacity: 1, y: 0, duration: 0.9 }, 0.3)
+    .to('#panelSteel .panel-divider', { opacity: 1, scaleX: 1, duration: 0.6 }, 0.5)
+    .to('#panelSteel .panel-subtitle', { opacity: 1, y: 0, duration: 0.7 }, 0.55)
+    .to('#panelSteel .panel-heading', { opacity: 1, y: 0, duration: 0.8 }, 0.6)
+    .to('#panelSteel .panel-desc', { opacity: 1, y: 0, duration: 0.7 }, 0.75)
+    .to('#panelSteel .panel-cta', { opacity: 1, y: 0, duration: 0.6 }, 0.9);
+
+  tl.to('#panelGroup .panel-logo', { opacity: 1, y: 0, duration: 0.9 }, 0.45)
+    .to('#panelGroup .panel-divider', { opacity: 1, scaleX: 1, duration: 0.6 }, 0.65)
+    .to('#panelGroup .panel-subtitle', { opacity: 1, y: 0, duration: 0.7 }, 0.7)
+    .to('#panelGroup .panel-heading', { opacity: 1, y: 0, duration: 0.8 }, 0.75)
+    .to('#panelGroup .panel-desc', { opacity: 1, y: 0, duration: 0.7 }, 0.9)
+    .to('#panelGroup .panel-cta', { opacity: 1, y: 0, duration: 0.6 }, 1.05);
+
+  tl.to('.split-line', { opacity: 1, duration: 1.2 }, 0.3);
+  tl.to('.footer', { opacity: 1, y: 0, duration: 0.8 }, 1.1);
+})();
+</script>
 </body>
 </html>

@@ -348,41 +348,47 @@
 
   /* ─── RESPONSIVE ─── */
   @media (max-width: 768px) {
-    .chooser { flex-direction: column; }
+    html, body { overflow: auto; height: auto; }
+
+    .chooser {
+      flex-direction: column;
+      height: auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
 
     .panel-steel, .panel-group {
-      flex: 1 1 50% !important;
+      flex: none !important;
       width: 100%;
+      min-height: 50vh;
+      min-height: 50dvh;
+      padding: 2.5rem 0 1.5rem;
     }
 
     .split-line {
-      top: 50%;
-      left: 0 !important;
-      width: 100%;
-      height: 3px;
-      transform: translateY(-50%) skewY(-1.5deg) !important;
+      display: none;
     }
 
-    .split-line::before {
-      background: linear-gradient(90deg, transparent 0%, var(--steel-gold) 15%, var(--steel-gold) 85%, transparent 100%);
-    }
-
-    .split-line::after {
-      top: 50%;
-      left: 0;
-      transform: translateY(-50%);
-      width: 100%;
+    /* Subtle horizontal divider instead of diagonal */
+    .panel-group::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
       height: 1px;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.8) 20%, rgba(255,255,255,0.8) 80%, transparent 100%);
+      background: linear-gradient(90deg, transparent, var(--steel-gold) 30%, var(--steel-gold) 70%, transparent);
+      opacity: 0.4;
+      z-index: 5;
     }
 
+    /* Disable hover expand on mobile — tap goes straight to link */
     .chooser.hover-steel .panel-steel,
-    .chooser.hover-group .panel-group { flex-basis: 56% !important; }
+    .chooser.hover-group .panel-group,
     .chooser.hover-steel .panel-group,
-    .chooser.hover-group .panel-steel { flex-basis: 44% !important; }
-
-    .chooser.hover-steel .split-line { top: 56%; }
-    .chooser.hover-group .split-line { top: 44%; }
+    .chooser.hover-group .panel-steel {
+      flex: none !important;
+    }
 
     .panel-logo { height: 40px; margin-bottom: 1.2rem; }
     .panel-heading { font-size: clamp(1.8rem, 8vw, 2.6rem); }
@@ -390,15 +396,21 @@
     .panel-subtitle { font-size: 0.95rem; }
 
     .footer {
-      background: linear-gradient(transparent, rgba(26,26,30,0.85));
-      padding: 1.2rem 1rem;
+      position: relative;
+      background: var(--dark);
+      padding: 1.4rem 1rem;
+      opacity: 1;
+      transform: none;
     }
 
+    /* Language selector stays top-right on mobile, just smaller */
     .lang-selector {
-      top: auto;
-      bottom: 3rem;
-      right: 50%;
-      transform: translateX(50%) translateY(8px);
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-color: rgba(255,255,255,0.12);
     }
 
     .corner-brand { top: 1.2rem; }
@@ -411,8 +423,16 @@
     .panel-heading { margin-bottom: 0.6rem; }
     .panel-cta { margin-top: 1.2rem; }
 
-    .lang-btn { padding: 6px 10px; font-size: 0.7rem; }
-    .lang-btn .lang-flag { font-size: 0.9rem; }
+    .lang-btn { padding: 5px 8px; font-size: 0.7rem; }
+    .lang-btn .lang-flag { font-size: 0.85rem; }
+
+    .lang-selector { padding: 2px; }
+  }
+
+  @media (max-width: 360px) {
+    /* Ultra-narrow: hide lang text, show flags only */
+    .lang-btn { padding: 5px 7px; gap: 0; }
+    .lang-btn .lang-flag { font-size: 0.95rem; }
   }
 </style>
 </head>
