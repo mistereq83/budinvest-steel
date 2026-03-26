@@ -134,26 +134,34 @@ def generate_hreflang(page_key, current_lang):
     hreflangs = []
     
     # Polish (canonical)
-    if current_lang == 'pl':
-        pl_url = f'https://budinvest-steel.com/{page_key}' if page_key else 'https://budinvest-steel.com'
+    if page_key == '':
+        pl_url = 'https://budinvest-steel.com'
     else:
-        pl_url = f'https://budinvest-steel.com/{page_key}' if page_key else 'https://budinvest-steel.com'
+        pl_url = f'https://budinvest-steel.com/{page_key}'
         
     hreflangs.append(f'<link rel="alternate" hreflang="pl" href="{pl_url}" />')
     
     # English
     if page_key in URL_MAP and 'en' in URL_MAP[page_key]:
         en_page = URL_MAP[page_key]['en']
-        en_url = f'https://budinvest-steel.com/en/{en_page}.html' if en_page != 'index' else 'https://budinvest-steel.com/en/'
-        en_url = en_url.replace('.html', '')
+        if en_page == 'index':
+            en_url = 'https://budinvest-steel.com/en/'
+        else:
+            en_url = f'https://budinvest-steel.com/en/{en_page}'
         hreflangs.append(f'<link rel="alternate" hreflang="en" href="{en_url}" />')
+    elif page_key == '':  # homepage
+        hreflangs.append(f'<link rel="alternate" hreflang="en" href="https://budinvest-steel.com/en/" />')
     
     # German
     if page_key in URL_MAP and 'de' in URL_MAP[page_key]:
         de_page = URL_MAP[page_key]['de']
-        de_url = f'https://budinvest-steel.com/de/{de_page}.html' if de_page != 'index' else 'https://budinvest-steel.com/de/'
-        de_url = de_url.replace('.html', '')
+        if de_page == 'index':
+            de_url = 'https://budinvest-steel.com/de/'
+        else:
+            de_url = f'https://budinvest-steel.com/de/{de_page}'
         hreflangs.append(f'<link rel="alternate" hreflang="de" href="{de_url}" />')
+    elif page_key == '':  # homepage
+        hreflangs.append(f'<link rel="alternate" hreflang="de" href="https://budinvest-steel.com/de/" />')
     
     # Default/canonical
     hreflangs.append(f'<link rel="alternate" hreflang="x-default" href="{pl_url}" />')
@@ -174,6 +182,18 @@ def build_page(src_path, rel_path, lang_code='pl', translations=None):
     
     # Load partials
     head = read_file(os.path.join(PARTIALS_DIR, '_head.html'))
+    # Localize JSON-LD in head
+    if lang_code == 'en':
+        head = head.replace('"availableLanguage": ["Polish", "German"]', '"availableLanguage": ["English", "Polish", "German"]')
+        head = head.replace('"description": "Firma specjalizująca się w konstrukcjach stalowych', '"description": "Company specializing in steel structures')
+        head = head.replace('zbiornikach ciśnieniowych, rurociągach przemysłowych i prefabrykacji betonu', 'pressure vessels, industrial pipelines and concrete prefabrication')
+        head = head.replace('15+ lat doświadczenia, rynki PL i DE', '15+ years of experience, PL and DE markets')
+    elif lang_code == 'de':
+        head = head.replace('"availableLanguage": ["Polish", "German"]', '"availableLanguage": ["German", "Polish", "English"]')
+        head = head.replace('"description": "Firma specjalizująca się w konstrukcjach stalowych', '"description": "Unternehmen spezialisiert auf Stahlkonstruktionen')
+        head = head.replace('zbiornikach ciśnieniowych, rurociągach przemysłowych i prefabrykacji betonu', 'Druckbehälter, Industrierohrleitungen und Betonfertigteile')
+        head = head.replace('15+ lat doświadczenia, rynki PL i DE', '15+ Jahre Erfahrung, Märkte PL und DE')
+    
     navbar = get_localized_navbar(lang_code, nav_active)
     mobile_menu = get_localized_mobile_menu(lang_code, nav_active)
     footer = read_file(os.path.join(PARTIALS_DIR, '_footer.html'))
@@ -183,7 +203,22 @@ def build_page(src_path, rel_path, lang_code='pl', translations=None):
     # Build canonical URL and page key for hreflang
     lang_config = LANGUAGES[lang_code]
     page_path = rel_path.replace('index.html', '').replace('.html', '')
-    page_key = page_path  # Used for hreflang mapping
+    
+    # For hreflang, we need the original Polish page key
+    original_page_key = None
+    if lang_code != 'pl':
+        # Find the original Polish page key by reverse mapping
+        for pl_key, mapping in URL_MAP.items():
+            if lang_code in mapping and mapping[lang_code] == page_path:
+                original_page_key = pl_key
+                break
+        # If no mapping found, use page_path as fallback
+        if original_page_key is None:
+            original_page_key = page_path
+    else:
+        original_page_key = page_path
+    
+    page_key = original_page_key  # Used for hreflang mapping
     
     if lang_code == 'pl':
         canonical_url = f'https://budinvest-steel.com/{page_path}' if page_path else 'https://budinvest-steel.com'
