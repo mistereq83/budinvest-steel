@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Compare — BUD-INVEST Steel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0a; color: #f3f4f6; font-family: 'Inter', system-ui, sans-serif; }
+        
+        h1 { text-align: center; padding: 2rem; font-size: 1.5rem; color: #999; }
+        h1 span { color: #4361ee; }
+        
+        .variant {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            overflow: hidden;
+            border-bottom: 2px solid #222;
+        }
+        
+        .variant-label {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 10;
+            background: rgba(0,0,0,0.7);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            backdrop-filter: blur(10px);
+        }
+        .variant-label strong { color: #4361ee; }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('/images/hero-poster.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            max-width: 700px;
+        }
+        
+        .hero-content h2 {
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            margin-bottom: 1rem;
+            line-height: 1.15;
+        }
+        
+        .hero-content p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: rgba(243, 244, 246, 0.8);
+            max-width: 500px;
+        }
+        
+        /* ===== CURRENT ===== */
+        .current .hero-bg {
+            filter: grayscale(60%) contrast(120%);
+            opacity: 0.5;
+        }
+        .current .hero-overlay {
+            background: linear-gradient(to right, #151515 0%, rgba(21,21,21,0.75) 45%, rgba(21,21,21,0.4) 100%);
+        }
+        
+        /* ===== VARIANT A — Mgła ===== */
+        .variant-a .hero-bg {
+            filter: grayscale(20%) contrast(110%);
+            opacity: 0.65;
+        }
+        .variant-a .hero-overlay {
+            background: linear-gradient(to right, rgba(21,21,21,0.7) 0%, rgba(21,21,21,0.3) 40%, rgba(21,21,21,0.1) 100%);
+        }
+        
+        /* ===== VARIANT B — Tekstowy pas ===== */
+        .variant-b .hero-bg {
+            filter: grayscale(30%) contrast(110%);
+            opacity: 0.6;
+        }
+        .variant-b .hero-overlay {
+            background: linear-gradient(to right, rgba(21,21,21,0.85) 0%, rgba(21,21,21,0.4) 35%, transparent 70%);
+        }
+        
+        /* ===== VARIANT C — Balans ===== */
+        .variant-c .hero-bg {
+            filter: grayscale(25%) contrast(110%);
+            opacity: 0.55;
+        }
+        .variant-c .hero-overlay {
+            background: linear-gradient(to right, rgba(21,21,21,0.8) 0%, rgba(21,21,21,0.5) 45%, rgba(21,21,21,0.2) 100%);
+        }
+        
+        /* ===== VARIANT D — Dolny cień ===== */
+        .variant-d .hero-bg {
+            filter: grayscale(20%) contrast(110%);
+            opacity: 0.6;
+        }
+        .variant-d .hero-overlay {
+            background: linear-gradient(to top, rgba(21,21,21,0.85) 0%, rgba(21,21,21,0.3) 50%, rgba(21,21,21,0.1) 100%);
+        }
+        
+        /* Quick nav */
+        .nav-bar {
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(0,0,0,0.85);
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+        }
+        .nav-bar a {
+            color: #999;
+            text-decoration: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        .nav-bar a:hover { color: #fff; background: rgba(67,97,238,0.3); }
+        .nav-bar a.current-link { color: #f87171; }
+    </style>
+</head>
+<body>
+    <h1>Porównanie gradientów — <span>BUD-INVEST Steel</span> hero</h1>
+    
+    <!-- CURRENT -->
+    <div class="variant current" id="current">
+        <div class="variant-label">🔴 <strong>OBECNY</strong> — mocny gradient</div>
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h2>Konstrukcje stalowe najwyższej jakości</h2>
+            <p>Projektujemy i realizujemy obiekty przemysłowe, hale magazynowe oraz konstrukcje specjalne z najwyższą precyzją wykonania.</p>
+        </div>
+    </div>
+    
+    <!-- A -->
+    <div class="variant variant-a" id="a">
+        <div class="variant-label"><strong>A — Mgła</strong> — najbardziej subtelny</div>
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h2>Konstrukcje stalowe najwyższej jakości</h2>
+            <p>Projektujemy i realizujemy obiekty przemysłowe, hale magazynowe oraz konstrukcje specjalne z najwyższą precyzją wykonania.</p>
+        </div>
+    </div>
+    
+    <!-- B -->
+    <div class="variant variant-b" id="b">
+        <div class="variant-label"><strong>B — Tekstowy pas</strong> — gradient tylko z lewej</div>
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h2>Konstrukcje stalowe najwyższej jakości</h2>
+            <p>Projektujemy i realizujemy obiekty przemysłowe, hale magazynowe oraz konstrukcje specjalne z najwyższą precyzją wykonania.</p>
+        </div>
+    </div>
+    
+    <!-- C -->
+    <div class="variant variant-c" id="c">
+        <div class="variant-label"><strong>C — Balans</strong> — złoty środek</div>
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h2>Konstrukcje stalowe najwyższej jakości</h2>
+            <p>Projektujemy i realizujemy obiekty przemysłowe, hale magazynowe oraz konstrukcje specjalne z najwyższą precyzją wykonania.</p>
+        </div>
+    </div>
+    
+    <!-- D -->
+    <div class="variant variant-d" id="d">
+        <div class="variant-label"><strong>D — Dolny cień</strong> — gradient od dołu</div>
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h2>Konstrukcje stalowe najwyższej jakości</h2>
+            <p>Projektujemy i realizujemy obiekty przemysłowe, hale magazynowe oraz konstrukcje specjalne z najwyższą precyzją wykonania.</p>
+        </div>
+    </div>
+    
+    <nav class="nav-bar">
+        <a href="#current" class="current-link">🔴 Obecny</a>
+        <a href="#a">A Mgła</a>
+        <a href="#b">B Pas</a>
+        <a href="#c">C Balans</a>
+        <a href="#d">D Cień</a>
+    </nav>
+</body>
+</html>
