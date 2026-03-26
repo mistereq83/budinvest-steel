@@ -21,11 +21,11 @@ app.use((req, res, next) => {
 });
 
 // Resend configuration
-const resend = new Resend('REDACTED_RESEND_KEY');
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Turnstile verification
 async function verifyTurnstile(token) {
-    const secret = 'REDACTED_TURNSTILE_SECRET';
+    const secret = process.env.TURNSTILE_SECRET;
     
     try {
         const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
