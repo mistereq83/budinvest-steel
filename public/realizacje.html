@@ -1250,30 +1250,36 @@
         }
 
         /* Language Switcher */
-        .language-switcher {
+        .language-switcher,
+        .lang-switcher {
             display: flex;
-            gap: 0.5rem;
+            gap: 0;
             align-items: center;
             margin-right: 1rem;
         }
         .lang-flag {
-            font-size: 1.2rem;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
+            font-family: var(--font-head);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 0.3rem 0.1rem;
             cursor: pointer;
             transition: var(--transition);
-            opacity: 0.6;
-            border: 1px solid transparent;
+            color: var(--text-gray);
+            text-decoration: none;
         }
         .lang-flag:hover {
-            opacity: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(67, 97, 238, 0.3);
+            color: var(--text-light);
         }
         .lang-flag.active {
-            opacity: 1;
-            background: rgba(67, 97, 238, 0.1);
-            border-color: var(--arc-blue);
+            color: var(--arc-blue);
+        }
+        .lang-sep {
+            color: rgba(255,255,255,0.15);
+            font-size: 0.65rem;
+            margin: 0 0.15rem;
+            user-select: none;
         }
 
     
@@ -1435,9 +1441,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </div>
 
     <div class="lang-switcher">
-        <a href="/realizacje" class="lang-flag active" hreflang="pl" lang="pl" title="Polski" aria-label="Polski">🇵🇱</a>
-        <a href="/en/projects" class="lang-flag" hreflang="en" lang="en" title="English" aria-label="English">🇬🇧</a>
-        <a href="/de/projekte" class="lang-flag" hreflang="de" lang="de" title="Deutsch" aria-label="Deutsch">🇩🇪</a>
+        <a href="/realizacje" class="lang-flag active" hreflang="pl">PL</a><span class="lang-sep">|</span><a href="/en/projects" class="lang-flag" hreflang="en">EN</a><span class="lang-sep">|</span><a href="/de/projekte" class="lang-flag" hreflang="de">DE</a>
     </div>
 
     <a href="/kontakt" class="btn nav-cta" data-nav="kontakt">Kontakt</a>
@@ -1451,9 +1455,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <div class="mobile-menu" id="mobileMenu">
     <div class="lang-switcher" style="margin-bottom: 2rem;">
-        <a href="/realizacje" class="lang-flag active" hreflang="pl" lang="pl" title="Polski" aria-label="Polski">🇵🇱</a>
-        <a href="/en/projects" class="lang-flag" hreflang="en" lang="en" title="English" aria-label="English">🇬🇧</a>
-        <a href="/de/projekte" class="lang-flag" hreflang="de" lang="de" title="Deutsch" aria-label="Deutsch">🇩🇪</a>
+        <a href="/realizacje" class="lang-flag active" hreflang="pl">PL</a><span class="lang-sep">|</span><a href="/en/projects" class="lang-flag" hreflang="en">EN</a><span class="lang-sep">|</span><a href="/de/projekte" class="lang-flag" hreflang="de">DE</a>
     </div>
     <a href="/" data-nav="home">Strona główna</a>
     <a href="/o-nas" data-nav="o-nas">O firmie</a>
@@ -1813,80 +1815,7 @@ if (navEl) {
     });
 })();
 
-// Language Switcher
-(function() {
-    const langFlags = document.querySelectorAll('.lang-flag');
-    if (!langFlags.length) return;
-    
-    // URL mappings per language
-    const urlMap = {
-        '': { en: '/en/', de: '/de/' }, // homepage
-        'o-nas': { en: '/en/about', de: '/de/ueber-uns' },
-        'uslugi': { en: '/en/services', de: '/de/leistungen' },
-        'uslugi/konstrukcje-stalowe': { en: '/en/services/steel-structures', de: '/de/leistungen/stahlkonstruktionen' },
-        'uslugi/zbiorniki-cisnieniowe': { en: '/en/services/pressure-vessels', de: '/de/leistungen/druckbehaelter' },
-        'uslugi/rurociagi-przemyslowe': { en: '/en/services/industrial-pipelines', de: '/de/leistungen/industrierohrleitungen' },
-        'uslugi/obrobka-metali': { en: '/en/services/metal-processing', de: '/de/leistungen/metallbearbeitung' },
-        'uslugi/prefabrykacja-betonu': { en: '/en/services/concrete-prefabrication', de: '/de/leistungen/betonfertigteile' },
-        'realizacje': { en: '/en/projects', de: '/de/projekte' },
-        'certyfikaty': { en: '/en/certifications', de: '/de/zertifikate' },
-        'park-maszynowy': { en: '/en/machinery', de: '/de/maschinenpark' },
-        'kariera': { en: '/en/careers', de: '/de/karriere' },
-        'kontakt': { en: '/en/contact', de: '/de/kontakt' }
-    };
-    
-    function getCurrentPageKey() {
-        const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
-        return path;
-    }
-    
-    langFlags.forEach(flag => {
-        flag.addEventListener('click', () => {
-            const targetLang = flag.dataset.lang;
-            if (targetLang === 'pl') {
-                // Go to Polish version - map current page back to PL
-                const currentPath = window.location.pathname;
-                if (currentPath.startsWith('/en/') || currentPath.startsWith('/de/')) {
-                    // Find the corresponding PL page
-                    const enPath = currentPath.replace(/^\/en\//, '');
-                    const dePath = currentPath.replace(/^\/de\//, '');
-                    
-                    for (const [plKey, mapping] of Object.entries(urlMap)) {
-                        if ((mapping.en && mapping.en.replace('/en/', '') === enPath) ||
-                            (mapping.de && mapping.de.replace('/de/', '') === dePath)) {
-                            window.location.href = plKey ? `/${plKey}` : '/';
-                            return;
-                        }
-                    }
-                }
-                return;
-            }
-            
-            const currentPageKey = getCurrentPageKey();
-            const mapping = urlMap[currentPageKey];
-            
-            if (mapping && mapping[targetLang]) {
-                window.location.href = mapping[targetLang];
-            }
-        });
-    });
-    
-    // Set active language based on current path
-    function setActiveLanguage() {
-        const currentPath = window.location.pathname;
-        langFlags.forEach(flag => flag.classList.remove('active'));
-        
-        if (currentPath.startsWith('/en/')) {
-            document.querySelector('[data-lang="en"]')?.classList.add('active');
-        } else if (currentPath.startsWith('/de/')) {
-            document.querySelector('[data-lang="de"]')?.classList.add('active');
-        } else {
-            document.querySelector('[data-lang="pl"]')?.classList.add('active');
-        }
-    }
-    
-    setActiveLanguage();
-})();
+// Language Switcher — no JS needed, links have correct href from build
 </script>
 
 </body>

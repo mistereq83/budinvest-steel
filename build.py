@@ -127,15 +127,15 @@ def build_hreflang(route_specs):
 
 
 def build_switcher(route_specs, current_lang):
-    items = [('pl', 'Polski', '🇵🇱'), ('en', 'English', '🇬🇧'), ('de', 'Deutsch', '🇩🇪')]
+    items = [('pl', 'PL'), ('en', 'EN'), ('de', 'DE')]
     links = []
-    for lang, title, flag in items:
+    for lang, label in items:
         href = url_for(lang, route_specs[lang][1]).replace(SITE_URL, '') or '/'
         active = ' active' if lang == current_lang else ''
         links.append(
-            f'<a href="{href}" class="lang-flag{active}" hreflang="{lang}" lang="{lang}" title="{title}" aria-label="{title}">{flag}</a>'
+            f'<a href="{href}" class="lang-flag{active}" hreflang="{lang}">{label}</a>'
         )
-    return '\n        '.join(links)
+    return '<span class="lang-sep">|</span>'.join(links)
 
 
 def localized_partial(lang, filename):
