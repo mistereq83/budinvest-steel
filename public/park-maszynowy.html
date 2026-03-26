@@ -694,7 +694,7 @@
         }
 
         @media (max-width: 768px) {
-            .hero-video { display: none; }
+            /* hero-video plays on mobile too */
             .hero-bg { opacity: 0.7 !important; filter: grayscale(20%) contrast(110%) !important; }
             .hero-overlay { background: linear-gradient(to bottom, rgba(21,21,21,0.3) 0%, rgba(21,21,21,0.7) 100%) !important; }
             
@@ -1713,17 +1713,28 @@ if (navEl) {
     }, { passive: true });
 }
 
-// Hero video lazy load — desktop only, after page fully loaded
+// Hero video lazy load — all devices, smooth fade-in
 (function() {
     const vid = document.getElementById('heroVideo');
     if (!vid) return;
-    if (window.innerWidth < 768) { vid.remove(); return; }
     
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            vid.play().catch(() => {}); // autoplay may fail, poster stays
-        }, 1000);
-    });
+    // Start transparent, fade in when playing
+    vid.style.opacity = '0';
+    vid.style.transition = 'opacity 1.2s ease';
+    
+    function tryPlay() {
+        vid.play().then(() => {
+            vid.style.opacity = '1';
+        }).catch(() => {
+            // Autoplay blocked — show poster via hero-bg, keep video hidden
+        });
+    }
+    
+    if (document.readyState === 'complete') {
+        setTimeout(tryPlay, 500);
+    } else {
+        window.addEventListener('load', () => setTimeout(tryPlay, 500));
+    }
 })();
 
 // Language Switcher — no JS needed, links have correct href from build
