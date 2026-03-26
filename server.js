@@ -73,7 +73,6 @@ app.post('/api/contact', async (req, res) => {
             'wycena-zbiorniki': 'Wycena — zbiorniki ciśnieniowe', 
             'wycena-rurociagi': 'Wycena — rurociągi przemysłowe',
             'wycena-obrobka': 'Wycena — obróbka metali',
-            'wycena-beton': 'Wycena — prefabrykacja betonu',
             'rekrutacja': 'Rekrutacja / Praca',
             'inne': 'Inne'
         };
@@ -184,8 +183,7 @@ app.get('/en/services/:page', (req, res) => {
         'steel-structures': 'steel-structures',
         'pressure-vessels': 'pressure-vessels',
         'industrial-pipelines': 'industrial-pipelines',
-        'metal-processing': 'metal-processing',
-        'concrete-prefabrication': 'concrete-prefabrication'
+        'metal-processing': 'metal-processing'
     };
     const page = pageMap[req.params.page];
     if (page) {
@@ -225,8 +223,7 @@ app.get('/de/leistungen/:page', (req, res) => {
         'stahlkonstruktionen': 'stahlkonstruktionen',
         'druckbehaelter': 'druckbehaelter',
         'industrierohrleitungen': 'industrierohrleitungen',
-        'metallbearbeitung': 'metallbearbeitung',
-        'betonfertigteile': 'betonfertigteile'
+        'metallbearbeitung': 'metallbearbeitung'
     };
     const page = pageMap[req.params.page];
     if (page) {

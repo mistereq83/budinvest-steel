@@ -52,11 +52,6 @@ PAGE_SPECS = [
         'en': ('src/en/uslugi/obrobka-metali.html', 'services/metal-processing.html'),
         'de': ('src/de/leistungen/metallbearbeitung.html', 'leistungen/metallbearbeitung.html'),
     }),
-    ('uslugi/prefabrykacja-betonu', {
-        'pl': ('src/uslugi/prefabrykacja-betonu.html', 'uslugi/prefabrykacja-betonu.html'),
-        'en': ('src/en/uslugi/prefabrykacja-betonu.html', 'services/concrete-prefabrication.html'),
-        'de': ('src/de/leistungen/betonfertigteile.html', 'leistungen/betonfertigteile.html'),
-    }),
     ('realizacje', {
         'pl': ('src/realizacje.html', 'realizacje.html'),
         'en': ('src/en/realizacje.html', 'projects.html'),
